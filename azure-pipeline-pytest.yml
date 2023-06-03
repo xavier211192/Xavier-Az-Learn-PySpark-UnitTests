@@ -1,0 +1,20 @@
+name: Py Spark Unit Tests
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Tests
+    displayName: Unit Tests using Pytest
+
+    jobs:
+      - job:
+        displayName: PySpark Unit Tests
+        steps:
+          - script: |
+              sudo apt-get update
+              sudo apt-get install default-jdk -y
+              pip install -r $(System.DefaultWorkingDirectory)/src/tests/test-requirements.txt
+              pip install --upgrade pytest pytest-azurepipelines
+              cd src && pytest -v -rf --test-run-title='Unit Tests Report'
+            displayName: Run Unit Tests
